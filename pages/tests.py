@@ -1,15 +1,36 @@
 import streamlit as st
+from ultralytics import YOLO
+import numpy as np
+from PIL import Image
+
+
+@st.cache_data
+def predict(path: str):
+    image = np.array(Image.open(path).convert('RGB'))
+    model = YOLO("yolo11n.pt")
+    return model(image)[0].plot()
+
 
 st.title("Тестовые изображения")
-st.write(
-    "Let's start building! For help and inspiration, head over"
-    "to [docs.streamlit.io](https://docs.streamlit.io/)."
-)
 
-if "counter" not in st.session_state:
-    st.session_state.counter = 0
+st.button('Удалить кэш', on_click=st.cache_data.clear())
 
-st.session_state.counter += 1
+st.header('Первый тест')
+st.image('pages/images/im1.jpg', caption='Фото до обработки')
+st.image(predict('pages/images/im1.jpg'), caption='Обработанное фото')
 
-st.session_state.counter
+st.header('Второй тест')
+st.image('pages/images/im2.jpg', caption='Фото до обработки')
+st.image(predict('pages/images/im2.jpg'), caption='Обработанное фото')
 
+st.header('Третий тест')
+st.image('pages/images/im3.jpg', caption='Фото до обработки')
+st.image(predict('pages/images/im3.jpg'), caption='Обработанное фото')
+
+st.header('Четвертый тест')
+st.image('pages/images/im4.jpg', caption='Фото до обработки')
+st.image(predict('pages/images/im4.jpg'), caption='Обработанное фото')
+
+st.header('Пятый тест')
+st.image('pages/images/im5.jpg', caption='Фото до обработки')
+st.image(predict('pages/images/im5.jpg'), caption='Обработанное фото')
